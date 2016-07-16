@@ -4,21 +4,22 @@ class PhoneNumber
   end
 
   def number
-    # /\d/.match(@dirty_number)
-    # use regex to return only digits
     return '0000000000' if /[a-z]/ === @dirty_number
-    result = @dirty_number.gsub(/[^\d]/, '')
-    if result.length == 10
-      result
-    elsif result.length == 11
-      if result[0] == "1"
-        result[1..-1]
-      else
-        '0000000000'
-      end
+    if clean_number.length == 10
+      clean_number
+    elsif clean_number.length == 11 && valid_prefix?
+      clean_number[1..-1]
     else
       '0000000000'
     end
+  end
+
+  def valid_prefix?
+    clean_number[0] == "1"
+  end
+
+  def clean_number
+    @clean_number ||= @dirty_number.gsub(/[^\d]/, '')
   end
 
   def area_code
