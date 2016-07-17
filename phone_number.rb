@@ -1,25 +1,29 @@
 class PhoneNumber
-  def initialize(dirty_number)
-    @dirty_number = dirty_number
+  def initialize(phone_number)
+    @phone_number = phone_number
   end
 
   def number
-    return '0000000000' if /[a-z]/ === @dirty_number
+    return '0' * 10 if contains_letters?
     if clean_number.length == 10
       clean_number
-    elsif clean_number.length == 11 && valid_prefix?
+    elsif valid_prefix?
       clean_number[1..-1]
     else
-      '0000000000'
+      '0' * 10
     end
   end
 
+  def contains_letters?
+    /[a-z]/ === @phone_number
+  end
+
   def valid_prefix?
-    clean_number[0] == "1"
+    clean_number.length == 11 && clean_number[0] == "1"
   end
 
   def clean_number
-    @clean_number ||= @dirty_number.gsub(/[^\d]/, '')
+    @clean_number ||= @phone_number.gsub(/[^\d]/, '')
   end
 
   def area_code
